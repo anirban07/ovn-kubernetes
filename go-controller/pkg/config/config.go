@@ -52,6 +52,9 @@ var (
 
 	// OvnSouth holds southbound OVN database client and server authentication and location details
 	OvnSouth OvnAuthConfig
+
+	// Daemonset mode
+	DaemonsetMode = false
 )
 
 // DefaultConfig holds parsed config file parameters and command-line overrides
@@ -135,6 +138,7 @@ type config struct {
 	Kubernetes KubernetesConfig
 	OvnNorth   rawOvnAuthConfig
 	OvnSouth   rawOvnAuthConfig
+	DaemonsetMode bool
 }
 
 // copy members of struct 'src' into the corresponding field in struct 'dst'
@@ -414,10 +418,11 @@ func buildKubernetesConfig(cli, file *config, defaults *Defaults) error {
 	} else if url.Scheme != "https" && url.Scheme != "http" {
 		return fmt.Errorf("kubernetes API server URL scheme %q invalid", url.Scheme)
 	}
-
+/*
 	if strings.HasPrefix(Kubernetes.APIServer, "https") && Kubernetes.CACert == "" {
 		return fmt.Errorf("kubernetes API server %q scheme requires a CA certificate", Kubernetes.APIServer)
 	}
+*/
 	return nil
 }
 

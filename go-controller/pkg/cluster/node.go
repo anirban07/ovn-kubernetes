@@ -1,6 +1,7 @@
 package cluster
 
 import (
+	"fmt"
 	"net"
 	"runtime"
 	"time"
@@ -9,6 +10,7 @@ import (
 
 	"github.com/openvswitch/ovn-kubernetes/go-controller/pkg/config"
 	"github.com/openvswitch/ovn-kubernetes/go-controller/pkg/ovn"
+	"github.com/openvswitch/ovn-kubernetes/go-controller/pkg/util"
 
 	kapi "k8s.io/api/core/v1"
 	"k8s.io/client-go/tools/cache"
@@ -59,10 +61,25 @@ func (cluster *OvnClusterController) StartClusterNode(name, configFilePath strin
 
 	logrus.Infof("Node %s ready for ovn initialization with subnet %s", node.Name, subnet.String())
 
-	err = setupOVNNode(name, config.Kubernetes.APIServer, config.Kubernetes.Token,
-		config.Kubernetes.CACert)
-	if err != nil {
-		return err
+	if (!config.DaemonsetMode) {
+		err = setupOVNNode(name, config.Kubernetes.APIServer, config.Kubernetes.Token,
+			config.Kubernetes.CACert)
+		if err != nil {
+			return err
+		}
+	} else {
+		// TODO: refactor setOVSExternalIDs to have better code reuse instead of below.
+		args := []string{
+			"set",
+			"Open_vSwitch",
+			".",
+			fmt.Sprintf("external_ids:k8s-api-server=\"%s\"", config.Kubernetes.APIServer),
+			fmt.Sprintf("external_ids:k8s-api-token=\"%s\"", config.Kubernetes.Token),
+		}
+		_, stderr, err := util.RunOVSVsctl(args...)
+		if err != nil {
+			return fmt.Errorf("error setting OVS external IDs: %v\n  %q", err, stderr)
+		}
 	}
 
 	err = ovn.CreateManagementPort(node.Name, subnet.String(),

@@ -7,6 +7,7 @@ import (
 	kapi "k8s.io/api/core/v1"
 	"k8s.io/client-go/tools/cache"
 
+	"github.com/openvswitch/ovn-kubernetes/go-controller/pkg/config"
 	"github.com/openvswitch/ovn-kubernetes/go-controller/pkg/ovn"
 	"github.com/openvswitch/ovn-kubernetes/go-controller/pkg/util"
 
@@ -252,10 +253,23 @@ func (cluster *OvnClusterController) StartClusterMaster(masterNodeName string) e
 
 // SetupMaster creates the central router and load-balancers for the network
 func (cluster *OvnClusterController) SetupMaster(masterNodeName string) error {
-	if err := setupOVNMaster(masterNodeName); err != nil {
-		return err
+	if (!config.DaemonsetMode) {
+		if err := setupOVNMaster(masterNodeName); err != nil {
+			return err
+		}
+	} else {
+		args := []string{
+			"set",
+			"Open_vSwitch",
+			".",
+			fmt.Sprintf("external_ids:k8s-api-server=\"%s\"", config.Kubernetes.APIServer),
+			fmt.Sprintf("external_ids:k8s-api-token=\"%s\"", config.Kubernetes.Token),
+		}
+		_, stderr, err := util.RunOVSVsctl(args...)
+		if err != nil {
+			return fmt.Errorf("error setting OVS external IDs: %v\n  %q", err, stderr)
+		}
 	}
-
 	// Create a single common distributed router for the cluster.
 	stdout, stderr, err := util.RunOVNNbctl("--", "--may-exist", "lr-add", masterNodeName, "--", "set", "logical_router", masterNodeName, "external_ids:k8s-cluster-router=yes")
 	if err != nil {
