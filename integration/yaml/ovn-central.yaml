@@ -66,7 +66,7 @@ spec:
         imagePullPolicy: IfNotPresent
         command: ["/root/init-connection.bash"]
         volumeMounts:
-          - mountPath: /etc/kubernetes
+          - mountPath: /var/lib/kubelet
             name: kubelet
           - mountPath: /var/lib/openvswitch
             name: ovn-db
