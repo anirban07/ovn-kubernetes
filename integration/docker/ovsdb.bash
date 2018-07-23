@@ -9,4 +9,11 @@ DB=/etc/openvswitch/conf.db
 
 [ -f $DB ] || ovsdb-tool create $DB
 
-exec ovsdb-server $DB -vconsole:info "--remote=punix:$DBSOCK"
+COUNTER=0
+while true
+do
+    COUNTER=COUNTER+1
+    echo >>> Counter is $COUNTER
+    exec ovsdb-server $DB -vconsole:info "--remote=punix:$DBSOCK"
+    sleep 1
+done

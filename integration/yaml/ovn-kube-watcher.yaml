@@ -5,7 +5,7 @@ metadata:
   namespace: kube-system
 data:
   #cluster cidr
-  k8s_cluster_cidr: "<CONTAINER_NETWORK_CIDR>"
+  k8s_cluster_cidr: "131.0.0.0/16"
 
 ---
 
@@ -27,11 +27,13 @@ spec:
     spec:
       hostNetwork: true
       serviceAccountName: ovn-kube-watcher-sa
+      tolerations:
+      - operator: "Exists"
       nodeSelector:
         kubernetes.io/role: "master"
       containers:
       - name: watcher
-        image: vmware/photon-2.0-ovnkube:v0.1.0
+        image: himkalyan/photon-2.0-ovnkube:v1.1.0
         imagePullPolicy: IfNotPresent
         env:
         - name: OVN_K8S_CLUSTER_CIDR
@@ -45,12 +47,12 @@ spec:
               fieldPath: spec.nodeName
         command: ["/root/watcher.bash"]
         volumeMounts:
-          - mountPath: /var/lib/kubelet
+          - mountPath: /etc/kubernetes
             name: kubelet
       volumes:
       - name: kubelet
         hostPath:
-          path: /var/lib/kubelet
+          path: /etc/kubernetes
 ---
 
 apiVersion: rbac.authorization.k8s.io/v1beta1

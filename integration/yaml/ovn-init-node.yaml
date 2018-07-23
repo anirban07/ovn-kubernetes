@@ -5,9 +5,9 @@ metadata:
   namespace: kube-system
 data:
   #cluster cidr
-  k8s_cluster_cidr: "<CONTAINER_NETWORK_CIDR>"
+  k8s_cluster_cidr: "131.0.0.0/16"
   #service cidr
-  k8s_service_cidr: "10.0.0.0/24"
+  k8s_service_cidr: "131.10.0.0/24"
 
 ---
 
@@ -29,9 +29,11 @@ spec:
     spec:
       hostNetwork: true
       serviceAccountName: ovnkube-node-sa
+      tolerations:
+      - operator: "Exists"
       containers:
       - name: init-node
-        image: vmware/photon-2.0-ovnkube:v0.1.0
+        image: himkalyan/photon-2.0-ovnkube:v1.1.0
         imagePullPolicy: IfNotPresent
         securityContext:
           capabilities:
@@ -53,12 +55,12 @@ spec:
               fieldPath: spec.nodeName
         command: ["/root/init-node.bash"]
         volumeMounts:
-          - mountPath: /var/lib/kubelet
+          - mountPath: /etc/kubernetes
             name: kubelet
           - mountPath: /var/run/openvswitch
             name: ovs-run
       - name: install-cni
-        image: vmware/photon-2.0-ovnkube:v0.1.0
+        image: himkalyan/photon-2.0-ovnkube:v1.1.0
         imagePullPolicy: IfNotPresent
         env:
         - name: OVN_K8S_NODE_NAME
@@ -71,7 +73,7 @@ spec:
             name: cni-bin-dir
           - mountPath: /host/etc/cni/net.d
             name: cni-conf-dir
-          - mountPath: /var/lib/kubelet
+          - mountPath: /etc/kubernetes
             name: kubelet
           - mountPath: /var/run/openvswitch
             name: ovs-run
@@ -84,7 +86,7 @@ spec:
           path: /etc/cni/net.d
       - name: kubelet
         hostPath:
-          path: /var/lib/kubelet
+          path: /etc/kubernetes
       - name: ovs-run
         hostPath:
           path: /var/run/openvswitch

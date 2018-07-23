@@ -18,16 +18,17 @@ spec:
       tolerations:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
+      - operator: "Exists"
       nodeSelector:
         kubernetes.io/role: "master"
       serviceAccountName: ovnkube-ovn-central-sa
       containers:
       - name: ovnnb-db
-        image: vmware/photon-2.0-ovnkube:v0.1.0
+        image: himkalyan/photon-2.0-ovnkube:v1.1.0
         imagePullPolicy: IfNotPresent
         command: ["/root/ovnnb-db.bash"]
         volumeMounts:
-          - mountPath: /var/lib/kubelet
+          - mountPath: /etc/kubernetes 
             name: kubelet
           - mountPath: /var/lib/openvswitch
             name: ovn-db
@@ -39,11 +40,11 @@ spec:
             fieldRef:
               fieldPath: spec.nodeName
       - name: ovnsb-db
-        image: vmware/photon-2.0-ovnkube:v0.1.0
+        image: himkalyan/photon-2.0-ovnkube:v1.1.0
         imagePullPolicy: IfNotPresent
         command: ["/root/ovnsb-db.bash"]
         volumeMounts:
-          - mountPath: /var/lib/kubelet
+          - mountPath: /etc/kubernetes
             name: kubelet
           - mountPath: /var/lib/openvswitch
             name: ovn-db
@@ -55,18 +56,18 @@ spec:
             fieldRef:
               fieldPath: spec.nodeName
       - name: ovn-northd
-        image: vmware/photon-2.0-ovnkube:v0.1.0
+        image: himkalyan/photon-2.0-ovnkube:v1.1.0
         imagePullPolicy: IfNotPresent
         command: ["/root/ovn-northd.bash"]
         volumeMounts:
           - mountPath: /var/run/openvswitch
             name: ovn-run
       - name: init-connection
-        image: vmware/photon-2.0-ovnkube:v0.1.0
+        image: himkalyan/photon-2.0-ovnkube:v1.1.0
         imagePullPolicy: IfNotPresent
         command: ["/root/init-connection.bash"]
         volumeMounts:
-          - mountPath: /var/lib/kubelet
+          - mountPath: /etc/kubernetes
             name: kubelet
           - mountPath: /var/lib/openvswitch
             name: ovn-db
@@ -75,7 +76,7 @@ spec:
       volumes:
       - name: kubelet
         hostPath:
-          path: /var/lib/kubelet
+          path: /etc/kubernetes
       - name: ovn-run
         emptyDir: {}
       - name: ovn-db

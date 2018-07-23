@@ -18,24 +18,25 @@ spec:
       tolerations:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
+      - operator: "Exists"
       serviceAccountName: ovnkube-ovn-host-sa
       containers:
       - name: ovsdb
-        image: vmware/photon-2.0-ovnkube:v0.1.0
+        image: himkalyan/photon-2.0-ovnkube:v1.1.0
         imagePullPolicy: IfNotPresent
         command: ["/root/ovsdb.bash"]
         volumeMounts:
           - mountPath: /var/run/openvswitch
             name: ovs-run
       - name: ovs-vswitchd
-        image: vmware/photon-2.0-ovnkube:v0.1.0
+        image: himkalyan/photon-2.0-ovnkube:v1.1.0
         imagePullPolicy: IfNotPresent
         securityContext:
           capabilities:
             add: ["NET_ADMIN"]
         command: ["/root/ovs-vswitchd.bash"]
         volumeMounts:
-          - mountPath: /var/lib/kubelet
+          - mountPath: /etc/kubernetes
             name: kubelet
           - mountPath: /var/run/openvswitch
             name: ovs-run
@@ -45,21 +46,21 @@ spec:
             fieldRef:
               fieldPath: spec.nodeName
       - name: ovn-controller
-        image: vmware/photon-2.0-ovnkube:v0.1.0
+        image: himkalyan/photon-2.0-ovnkube:v1.1.0
         imagePullPolicy: IfNotPresent
         securityContext:
           capabilities:
             add: ["NET_ADMIN"]
         command: ["/root/ovn-controller.bash"]
         volumeMounts:
-          - mountPath: /var/lib/kubelet
+          - mountPath: /etc/kubernetes
             name: kubelet
           - mountPath: /var/run/openvswitch
             name: ovs-run
       volumes:
       - name: kubelet
         hostPath:
-          path: /var/lib/kubelet
+          path: /etc/kubernetes
       - name: ovs-run
         hostPath:
           path: /var/run/openvswitch
