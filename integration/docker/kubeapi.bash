@@ -4,7 +4,7 @@ KUBE_SECRETS_DIR=/var/run/secrets/kubernetes.io/serviceaccount
 
 export OVN_K8S_API_SERVER="${OVN_K8S_API_SERVER:-"$(\
 python -c "import yaml
-with open('/var/lib/kubelet/kubelet.conf' ,'r') as f:
+with open('/etc/kubelet/kubelet.conf' ,'r') as f:
   tree = yaml.load(f)
 print tree['clusters'][0]['cluster']['server']")"}"
 
