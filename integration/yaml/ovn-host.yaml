@@ -67,8 +67,8 @@ spec:
         hostPath:
           path: /var/run/openvswitch
       - name: ovs-log-dir
-          hostPath:
-            path: /var/log/ovs-custom
+        hostPath:
+          path: /var/log/ovs-custom
 
 ---
 
