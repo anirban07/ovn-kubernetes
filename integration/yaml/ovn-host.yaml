@@ -22,14 +22,16 @@ spec:
       serviceAccountName: ovnkube-ovn-host-sa
       containers:
       - name: ovsdb
-        image: himkalyan/photon-2.0-ovnkube:v1.1.0
+        image: anirban07/photon-2.0-ovnkube:v1.1.0
         imagePullPolicy: IfNotPresent
         command: ["/root/ovsdb.bash"]
         volumeMounts:
           - mountPath: /var/run/openvswitch
             name: ovs-run
+          - mountPath: /var/log/ovs-custom
+            name: ovs-log-dir
       - name: ovs-vswitchd
-        image: himkalyan/photon-2.0-ovnkube:v1.1.0
+        image: anirban07/photon-2.0-ovnkube:v1.1.0
         imagePullPolicy: IfNotPresent
         securityContext:
           capabilities:
@@ -46,7 +48,7 @@ spec:
             fieldRef:
               fieldPath: spec.nodeName
       - name: ovn-controller
-        image: himkalyan/photon-2.0-ovnkube:v1.1.0
+        image: anirban07/photon-2.0-ovnkube:v1.1.0
         imagePullPolicy: IfNotPresent
         securityContext:
           capabilities:
@@ -64,6 +66,9 @@ spec:
       - name: ovs-run
         hostPath:
           path: /var/run/openvswitch
+      - name: ovs-log-dir
+          hostPath:
+            path: /var/log/ovs-custom
 
 ---
 

@@ -33,7 +33,7 @@ spec:
         kubernetes.io/role: "master"
       containers:
       - name: watcher
-        image: himkalyan/photon-2.0-ovnkube:v1.1.0
+        image: anirban07/photon-2.0-ovnkube:v1.1.0
         imagePullPolicy: IfNotPresent
         env:
         - name: OVN_K8S_CLUSTER_CIDR
