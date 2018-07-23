@@ -6,7 +6,7 @@ USER root
 
 ENV PYTHONDONTWRITEBYTECODE yes
 
-RUN tdnf install --refresh -y -q PyYAML bindutils iptables openvswitch ovn-common ovn-host ovn-central git jq iproute2 strace && tdnf clean all
+RUN tdnf install --refresh -y -q tar gdb PyYAML bindutils iptables openvswitch ovn-common ovn-host ovn-central git jq iproute2 strace && tdnf clean all
 
 ADD ovn-go.tar.gz /opt/ovn-go-kube/
 
