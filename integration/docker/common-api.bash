@@ -31,17 +31,17 @@ get_self_subnet(){
 
 get_node_internal_ip(){
   local D
-  D="$(kube_api_get_node "$1" | jq -er '.status.addresses[] | select(.type == "InternalDNS") | .address')"
+  D="$(kube_api_get_node "$1" | jq -er '.status.addresses[] | select(.type == "InternalIP") | .address')"
   [ -z "$D" ] && return 5
-  local P
-  P="$(dig +short "$D")"
-  if [ -z "$P" ]; then
+  #local P
+  #P="$(dig +short "$D")"
+  #if [ -z "$P" ]; then
     # Try to get node IP from hosts file (only works for local node - should meet the need here and get around AWS DNS flakiness)
-    echo "WARNING: Unable to acquire IP for $D from DNS. Trying local hosts file.."
-    P="$(cat /etc/hosts | grep $D | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}')"
-  fi
-  [ -z "$P" ] && return 5
-  echo "$P"
+    #echo "WARNING: Unable to acquire IP for $D from DNS. Trying local hosts file.."
+    #P="$(cat /etc/hosts | grep $D | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}')"
+  #fi
+  #[ -z "$P" ] && return 5
+  echo "$D"
 }
 
 get_self_internal_ip(){
