@@ -13,7 +13,7 @@ COUNTER=0
 while true
 do
     COUNTER=COUNTER+1
-    echo >>> Counter is $COUNTER
+    echo ">>> Counter is $COUNTER"
     exec ovsdb-server $DB -vconsole:info "--remote=punix:$DBSOCK" --log-file=/var/log/ovs-custom/ovsdb-server.log
     sleep 1
 done
