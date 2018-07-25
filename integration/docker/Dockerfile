@@ -8,13 +8,34 @@ ENV PYTHONDONTWRITEBYTECODE yes
 
 RUN mkdir /var/log/ovs-custom
 
-RUN tdnf update -y
+RUN mkdir /etc/depmod.d
 
-RUN tdnf install --refresh -y -q tar gdb vim PyYAML bindutils iptables openvswitch ovn-common ovn-host ovn-central git jq iproute2 strace && tdnf clean all
+RUN tdnf erase -y toybox
+
+RUN tdnf install --refresh -y -q gcc libcap-ng-devel build-essential util-linux findutils openssl systemd binutils autoconf automake libtool sed make tar gdb vim PyYAML bindutils iptables ovn-common ovn-host ovn-central git jq iproute2 strace && tdnf clean all
 
 ADD ovn-go.tar.gz /opt/ovn-go-kube/
 
 COPY entrypoint.bash install-cni.bash kubeapi.bash common-api.bash init-node.bash watcher.bash ovsdb.bash ovs-vswitchd.bash ovn-controller.bash ovs-common.inc ovnnb-db.bash ovnsb-db.bash ovn-northd.bash ovn-central-common.inc init-connection.bash /root/
 
 WORKDIR /root
+
+RUN git clone https://github.com/anirban07/ovs.git
+
+WORKDIR ovs
+
+RUN ./boot.sh
+
+RUN ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc CFLAGS="-g"
+
+RUN make
+
+RUN make install
+
+RUN make modules_install
+
+COPY openvswitch.conf /etc/depmod.d
+
+RUN /sbin/modprobe openvswitch
+
 ENTRYPOINT /root/entrypoint.bash
