@@ -24,7 +24,7 @@ spec:
       serviceAccountName: ovnkube-ovn-central-sa
       containers:
       - name: ovnnb-db
-        image: anirban07/photon-2.0-ovnkube:v1.1.0
+        image: anirban07/photon-2.0-ovnkube:latest
         imagePullPolicy: IfNotPresent
         command: ["/root/ovnnb-db.bash"]
         volumeMounts:
@@ -40,7 +40,7 @@ spec:
             fieldRef:
               fieldPath: spec.nodeName
       - name: ovnsb-db
-        image: anirban07/photon-2.0-ovnkube:v1.1.0
+        image: anirban07/photon-2.0-ovnkube:latest
         imagePullPolicy: IfNotPresent
         command: ["/root/ovnsb-db.bash"]
         volumeMounts:
@@ -56,14 +56,14 @@ spec:
             fieldRef:
               fieldPath: spec.nodeName
       - name: ovn-northd
-        image: anirban07/photon-2.0-ovnkube:v1.1.0
+        image: anirban07/photon-2.0-ovnkube:latest
         imagePullPolicy: IfNotPresent
         command: ["/root/ovn-northd.bash"]
         volumeMounts:
           - mountPath: /var/run/openvswitch
             name: ovn-run
       - name: init-connection
-        image: anirban07/photon-2.0-ovnkube:v1.1.0
+        image: anirban07/photon-2.0-ovnkube:latest
         imagePullPolicy: IfNotPresent
         command: ["/root/init-connection.bash"]
         volumeMounts:

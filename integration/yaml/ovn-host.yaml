@@ -22,7 +22,7 @@ spec:
       serviceAccountName: ovnkube-ovn-host-sa
       containers:
       - name: ovsdb
-        image: anirban07/photon-2.0-ovnkube:v1.1.0
+        image: anirban07/photon-2.0-ovnkube:latest
         imagePullPolicy: IfNotPresent
         command: ["/root/ovsdb.bash"]
         volumeMounts:
@@ -31,7 +31,7 @@ spec:
           - mountPath: /var/log/ovs-custom
             name: ovs-log-dir
       - name: ovs-vswitchd
-        image: anirban07/photon-2.0-ovnkube:v1.1.0
+        image: anirban07/photon-2.0-ovnkube:latest
         imagePullPolicy: IfNotPresent
         securityContext:
           capabilities:
@@ -48,7 +48,7 @@ spec:
             fieldRef:
               fieldPath: spec.nodeName
       - name: ovn-controller
-        image: anirban07/photon-2.0-ovnkube:v1.1.0
+        image: anirban07/photon-2.0-ovnkube:latest
         imagePullPolicy: IfNotPresent
         securityContext:
           capabilities:

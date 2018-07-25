@@ -12,7 +12,7 @@ RUN mkdir /etc/depmod.d
 
 RUN tdnf erase -y toybox
 
-RUN tdnf install --refresh -y -q gcc libcap-ng-devel build-essential util-linux findutils openssl systemd binutils autoconf automake libtool sed make tar gdb vim PyYAML bindutils iptables ovn-common ovn-host ovn-central git jq iproute2 strace && tdnf clean all
+RUN tdnf install --refresh -y -q tmux g++ libsasl2-dev libcurl4-openssl-dev pkg-config libssl-dev libcurl4-openssl-dev gcc libcap-ng-devel build-essential util-linux findutils openssl systemd binutils autoconf automake libtool sed make tar gdb vim PyYAML bindutils iptables ovn-common ovn-host ovn-central git jq iproute2 strace && tdnf clean all
 
 ADD ovn-go.tar.gz /opt/ovn-go-kube/
 
@@ -32,10 +32,14 @@ RUN make
 
 RUN make install
 
-RUN make modules_install
+# RUN make modules_install
 
-COPY openvswitch.conf /etc/depmod.d
+# COPY openvswitch.conf /etc/depmod.d
 
-RUN /sbin/modprobe openvswitch
+# RUN depmod -a
+
+# RUN /sbin/modprobe openvswitch
+
+WORKDIR /root
 
 ENTRYPOINT /root/entrypoint.bash

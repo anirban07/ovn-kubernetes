@@ -16,4 +16,4 @@ cd -
 tar Cczf "$G/go-controller/_output/go/bin" "$K/ovn-go.tar.gz" .
 
 cd "$K"
-docker build -t anirban07/photon-2.0-ovnkube:v1.1.0 .
+docker build -t anirban07/photon-2.0-ovnkube:latest .
