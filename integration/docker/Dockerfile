@@ -12,11 +12,11 @@ RUN mkdir /etc/depmod.d
 
 RUN tdnf erase -y toybox
 
-RUN tdnf install --refresh -y -q tmux g++ libsasl2-dev libcurl4-openssl-dev pkg-config libssl-dev libcurl4-openssl-dev gcc libcap-ng-devel build-essential util-linux findutils openssl systemd binutils autoconf automake libtool sed make tar gdb vim PyYAML bindutils iptables ovn-common ovn-host ovn-central git jq iproute2 strace && tdnf clean all
+RUN tdnf install --refresh -y -q procps-ng tmux g++ libsasl2-dev libcurl4-openssl-dev pkg-config libssl-dev libcurl4-openssl-dev gcc libcap-ng-devel build-essential util-linux findutils openssl systemd binutils autoconf automake libtool sed make tar gdb vim PyYAML bindutils iptables ovn-common ovn-host ovn-central git jq iproute2 strace && tdnf clean all
 
 ADD ovn-go.tar.gz /opt/ovn-go-kube/
 
-COPY entrypoint.bash install-cni.bash kubeapi.bash common-api.bash init-node.bash watcher.bash ovsdb.bash ovs-vswitchd.bash ovn-controller.bash ovs-common.inc ovnnb-db.bash ovnsb-db.bash ovn-northd.bash ovn-central-common.inc init-connection.bash /root/
+COPY gdb-commands.txt gdb-script.txt entrypoint.bash install-cni.bash kubeapi.bash common-api.bash init-node.bash watcher.bash ovsdb.bash ovs-vswitchd.bash ovn-controller.bash ovs-common.inc ovnnb-db.bash ovnsb-db.bash ovn-northd.bash ovn-central-common.inc init-connection.bash /root/
 
 WORKDIR /root
 
@@ -31,14 +31,6 @@ RUN ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc CFLAGS="-g"
 RUN make
 
 RUN make install
-
-# RUN make modules_install
-
-# COPY openvswitch.conf /etc/depmod.d
-
-# RUN depmod -a
-
-# RUN /sbin/modprobe openvswitch
 
 WORKDIR /root
 

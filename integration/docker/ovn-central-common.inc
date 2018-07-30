@@ -51,6 +51,7 @@ exec_db() {
 "--remote=punix:$(get_nbsb_sock "$1")" \
 "--remote=db:$(get_nbsb_remote_db_table "$1")" \
 "--unixctl=$(get_nbsb_unixctl "$1")" \
+"--log-file=/var/log/ovs-custom/ovsdb_"$1".log" \
 "$(get_nbsb_db "$1")" || R=$?
   del_nbsb_kube_label "$1" || :
   return $R
