@@ -60,6 +60,8 @@ spec:
         imagePullPolicy: IfNotPresent
         command: ["/root/ovn-northd.bash"]
         volumeMounts:
+          - mountPath: /etc/kubernetes
+            name: kubelet  
           - mountPath: /var/run/openvswitch
             name: ovn-run
       - name: init-connection

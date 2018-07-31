@@ -8,6 +8,8 @@ ENV PYTHONDONTWRITEBYTECODE yes
 
 RUN mkdir /var/log/ovs-custom
 
+RUN rm -rf /var/log/ovs-custom/*
+
 RUN mkdir /etc/depmod.d
 
 RUN tdnf erase -y toybox
