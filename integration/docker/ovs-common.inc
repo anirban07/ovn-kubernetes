@@ -3,6 +3,15 @@
 source "$(dirname "${BASH_SOURCE[0]}")/common-api.bash"
 
 DBSOCK=/var/run/openvswitch/db.sock
+MASTER1="10.118.101.29"
+MASTER2="10.118.101.190"
+MASTER3="10.118.101.16"
+
+# ovn_nb="tcp://$MASTER1:$(get_nbsb_remote_port nb),tcp://$MASTER2:$(get_nbsb_remote_port nb),tcp://$MASTER3:$(get_nbsb_remote_port nb)"
+# ovn_sb="tcp://$MASTER1:$(get_nbsb_remote_port sb),tcp://$MASTER2:$(get_nbsb_remote_port sb),tcp://$MASTER3:$(get_nbsb_remote_port sb)"
+
+ovn_nb="tcp://$MASTER1:6641,tcp://$MASTER2:6641,tcp://$MASTER3:6641"
+ovn_sb="tcp://$MASTER1:6642,tcp://$MASTER2:6642,tcp://$MASTER3:6642"
 
 get_nbsb_kube_nodes() {
   #convert to [{name: , port: }..] array

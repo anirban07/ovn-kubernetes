@@ -241,6 +241,7 @@ func (cluster *OvnClusterController) StartClusterMaster(masterNodeName string) e
 	}
 
 	if err := cluster.SetupMaster(masterNodeName); err != nil {
+		logrus.Errorf("Failed to setup master (%v)", err)
 		return err
 	}
 
@@ -408,6 +409,10 @@ func (cluster *OvnClusterController) watchNodes() error {
 			err := cluster.deleteNode(node)
 			if err != nil {
 				logrus.Errorf("Error deleting node %s: %v", node.Name, err)
+			}
+			err = util.RemoveNode(node.Name)
+			if err != nil {
+				logrus.Errorf("Failed to remove node %s (%v)", node.Name, err)
 			}
 		},
 	}, nil)

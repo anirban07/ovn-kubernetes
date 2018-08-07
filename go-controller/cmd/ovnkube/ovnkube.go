@@ -17,6 +17,8 @@ import (
 	"github.com/openvswitch/ovn-kubernetes/go-controller/pkg/factory"
 	"github.com/openvswitch/ovn-kubernetes/go-controller/pkg/ovn"
 	util "github.com/openvswitch/ovn-kubernetes/go-controller/pkg/util"
+
+	kexec "k8s.io/utils/exec"
 )
 
 func main() {
@@ -131,7 +133,8 @@ func delPidfile(pidfile string) {
 }
 
 func runOvnKube(ctx *cli.Context) error {
-	configFilePath, err := config.InitConfig(ctx, nil)
+	exec := kexec.New()
+	_, err := config.InitConfig(ctx, exec, nil)
 	if err != nil {
 		return err
 	}
@@ -174,6 +177,11 @@ func runOvnKube(ctx *cli.Context) error {
 				os.Exit(1)
 			}
 		}
+	}
+
+	if err = util.SetExec(exec); err != nil {
+		logrus.Errorf("Failed to initialize exec helper: %v", err)
+		return err
 	}
 
 	nodeToRemove := ctx.String("remove-node")
@@ -246,7 +254,7 @@ func runOvnKube(ctx *cli.Context) error {
 				panic("Cannot initialize node without service account 'token'. Please provide one with --k8s-token argument")
 			}
 
-			err := clusterController.StartClusterNode(node, configFilePath)
+			err := clusterController.StartClusterNode(node)
 			if err != nil {
 				logrus.Errorf(err.Error())
 				panic(err.Error())
@@ -271,7 +279,7 @@ func runOvnKube(ctx *cli.Context) error {
 		// run forever
 		select {}
 	}
-	if node != "" && (nodePortEnable || clusterController.OvnHA) {
+	if node != "" {
 		// run forever
 		select {}
 	}

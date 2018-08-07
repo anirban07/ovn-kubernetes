@@ -1,0 +1,113 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: ovn-central-peer
+  namespace: kube-system
+  labels:
+    k8s-app: ovn-central-peer
+spec:
+  selector:
+    matchLabels:
+      name: ovn-central-peer
+  template:
+    metadata:
+      labels:
+        name: ovn-central-peer
+    spec:
+      hostNetwork: true
+      tolerations:
+      - key: node-role.kubernetes.io/master-peer
+        effect: NoSchedule
+      - operator: "Exists"
+      nodeSelector:
+        kubernetes.io/role: "master-peer"
+      serviceAccountName: ovnkube-ovn-central-peer-sa
+      containers:
+      - name: ovnnb-db-peer
+        image: anirban07/photon-2.0-ovnkube:latest
+        imagePullPolicy: IfNotPresent
+        command: ["/root/ovnnb-db-peer.bash"]
+        volumeMounts:
+          - mountPath: /etc/kubernetes 
+            name: kubelet
+          - mountPath: /var/lib/openvswitch
+            name: ovn-db
+          - mountPath: /var/run/openvswitch
+            name: ovn-run
+        env:
+        - name: OVN_K8S_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+      - name: ovnsb-db-peer
+        image: anirban07/photon-2.0-ovnkube:latest
+        imagePullPolicy: IfNotPresent
+        command: ["/root/ovnsb-db-peer.bash"]
+        volumeMounts:
+          - mountPath: /etc/kubernetes
+            name: kubelet
+          - mountPath: /var/lib/openvswitch
+            name: ovn-db
+          - mountPath: /var/run/openvswitch
+            name: ovn-run
+        env:
+        - name: OVN_K8S_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+      - name: init-connection
+        image: anirban07/photon-2.0-ovnkube:latest
+        imagePullPolicy: IfNotPresent
+        command: ["/root/init-connection.bash"]
+        volumeMounts:
+          - mountPath: /etc/kubernetes
+            name: kubelet
+          - mountPath: /var/lib/openvswitch
+            name: ovn-db
+          - mountPath: /var/run/openvswitch
+            name: ovn-run
+      volumes:
+      - name: kubelet
+        hostPath:
+          path: /etc/kubernetes
+      - name: ovn-run
+        emptyDir: {}
+      - name: ovn-db
+        hostPath:
+          path: /var/lib/openvswitch
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: ovnkube-ovn-central-peer-crb
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: ovnkube-ovn-central-peer-cr
+subjects:
+- kind: ServiceAccount
+  name: ovnkube-ovn-central-peer-sa
+  namespace: kube-system
+
+---
+
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: ovnkube-ovn-central-peer-cr
+rules:
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["get", "list", "patch"]
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ovnkube-ovn-central-peer-sa
+  namespace: kube-system
+
+---

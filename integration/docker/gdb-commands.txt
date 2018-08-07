@@ -1,0 +1,7 @@
+set pagination off
+set auto-load safe-path /
+set logging on
+set loggin file /var/log/ovs-custom/gdb.log
+attach 1
+break jsonrpc-server.c:ovsdb_jsonrpc_session_got_request
+source gdb-script.txt

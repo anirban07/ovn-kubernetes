@@ -1,0 +1,9 @@
+while 1
+    continue
+    print request->method
+    if strncmp(request->method, "transact", 12) == 0 || strncmp(request->method, "list_dbs", 12) == 0 || strncmp(request->method, "get_schema", 12) == 0 || strncmp(request->method, "monitor", 12) == 0
+        p request->params->array->elems[0]->string
+    else
+        p "--"
+    end
+end

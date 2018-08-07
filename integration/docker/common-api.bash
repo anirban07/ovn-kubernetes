@@ -29,6 +29,17 @@ get_self_subnet(){
   echo "$S"
 }
 
+get_nbsb_remote_port() {
+  case "$1" in
+    "nb")
+      echo "6641"
+      ;;
+    "sb")
+      echo "6642"
+      ;;
+  esac
+}
+
 get_node_internal_ip(){
   local D
   D="$(kube_api_get_node "$1" | jq -er '.status.addresses[] | select(.type == "InternalIP") | .address')"

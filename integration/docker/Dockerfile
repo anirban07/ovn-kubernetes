@@ -18,7 +18,7 @@ RUN tdnf install --refresh -y -q procps-ng tmux g++ libsasl2-dev libcurl4-openss
 
 ADD ovn-go.tar.gz /opt/ovn-go-kube/
 
-COPY gdb-commands.txt gdb-script.txt entrypoint.bash install-cni.bash kubeapi.bash common-api.bash init-node.bash watcher.bash ovsdb.bash ovs-vswitchd.bash ovn-controller.bash ovs-common.inc ovnnb-db.bash ovnsb-db.bash ovn-northd.bash ovn-central-common.inc init-connection.bash /root/
+COPY gdb-commands.txt gdb-script.txt entrypoint.bash install-cni.bash kubeapi.bash common-api.bash init-node.bash watcher.bash ovsdb.bash ovs-vswitchd.bash ovn-controller.bash ovs-common.inc ovnnb-db.bash ovnsb-db.bash ovnnb-db-peer.bash ovnsb-db-peer.bash ovn-northd.bash ovn-central-common.inc init-connection.bash /root/
 
 WORKDIR /root
 
@@ -33,6 +33,8 @@ RUN ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc CFLAGS="-g"
 RUN make
 
 RUN make install
+
+ENV PATH "$PATH:/usr/share/openvswitch/scripts"
 
 WORKDIR /root
 
