@@ -4,4 +4,4 @@ set -xe
 
 source "$(dirname "${BASH_SOURCE[0]}")/ovn-central-common.inc"
 
-exec_db-peer sb
+exec_db_peer sb

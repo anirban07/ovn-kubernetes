@@ -4,8 +4,9 @@ set -ex
 
 source "$(dirname "${BASH_SOURCE[0]}")/ovs-common.inc"
 
-NB="$(get_nbsb_kube_remote nb)"
-export OVN_NB_DB="tcp:$NB"
+# NB="$(get_nbsb_kube_remote nb)"
+ovn_nb="tcp:$MASTER1:6641,tcp:$MASTER2:6641,tcp:$MASTER3:6641"
+export OVN_NB_DB="${ovn_nb}"
 
 ROLE="$(get_self_role)"
 
