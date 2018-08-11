@@ -55,17 +55,17 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
-      - name: init-connection
-        image: anirban07/photon-2.0-ovnkube:latest
-        imagePullPolicy: IfNotPresent
-        command: ["/root/init-connection.bash"]
-        volumeMounts:
-          - mountPath: /etc/kubernetes
-            name: kubelet
-          - mountPath: /var/lib/openvswitch
-            name: ovn-db
-          - mountPath: /var/run/openvswitch
-            name: ovn-run
+      # - name: init-connection
+      #   image: anirban07/photon-2.0-ovnkube:latest
+      #   imagePullPolicy: IfNotPresent
+      #   command: ["/root/init-connection.bash"]
+      #   volumeMounts:
+      #     - mountPath: /etc/kubernetes
+      #       name: kubelet
+      #     - mountPath: /var/lib/openvswitch
+      #       name: ovn-db
+      #     - mountPath: /var/run/openvswitch
+      #       name: ovn-run
       volumes:
       - name: kubelet
         hostPath:
