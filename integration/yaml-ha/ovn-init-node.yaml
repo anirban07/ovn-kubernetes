@@ -28,6 +28,7 @@ spec:
         name: ovn-kube-node
     spec:
       hostNetwork: true
+      hostPID: true
       serviceAccountName: ovnkube-node-sa
       tolerations:
       - operator: "Exists"
@@ -59,6 +60,8 @@ spec:
             name: kubelet
           - mountPath: /var/run/openvswitch
             name: ovs-run
+          - mountPath: /var/run/ovn-kubernetes/cni
+            name: ovn-kubernetes-cni
       - name: install-cni
         image: anirban07/photon-2.0-ovnkube:latest
         imagePullPolicy: IfNotPresent
@@ -77,6 +80,8 @@ spec:
             name: kubelet
           - mountPath: /var/run/openvswitch
             name: ovs-run
+          - mountPath: /var/run/ovn-kubernetes/cni
+            name: ovn-kubernetes-cni
       volumes:
       - name: cni-bin-dir
         hostPath:
@@ -90,6 +95,10 @@ spec:
       - name: ovs-run
         hostPath:
           path: /var/run/openvswitch
+      - name: ovn-kubernetes-cni
+        hostPath:
+          path: /var/run/ovn-kubernetes/cni
+
 
 ---
 

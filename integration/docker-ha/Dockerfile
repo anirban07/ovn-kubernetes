@@ -59,9 +59,7 @@ COPY entrypoint.bash install-cni.bash kubeapi.bash common-api.bash init-node.bas
 
 WORKDIR /root
 
-RUN git clone --single-branch -b anir-develop https://github.com/prasoontelang/ovs.git
-
-# ADD ovs-ldap.tar.gz ovs-ldap/
+RUN git clone https://github.com/anirban07/ovs.git
 
 WORKDIR ovs
 
