@@ -144,6 +144,8 @@ rules:
     - get
     - list
     - watch
+    - patch
+    - update
   - apiGroups:
     - networking.k8s.io
     resources:
@@ -152,6 +154,9 @@ rules:
     - get
     - watch
     - list
+    - patch
+    - update
+
 ---
 
 apiVersion: v1

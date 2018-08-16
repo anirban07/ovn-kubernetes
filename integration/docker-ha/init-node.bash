@@ -14,7 +14,7 @@ ROLE="$(get_self_role)"
 
 if [ "$ROLE" == "master" ]; then
   exec /opt/ovn-go-kube/ovnkube -net-controller -daemonset -init-gateways -gateway-localnet -init-master "$(get_self_name)" \
-  -init-node "$(get_self_name)" -k8s-cacert "$(get_ca_cert_path)" -k8s-token "$(get_token)" \
+  -k8s-cacert "$(get_ca_cert_path)" -k8s-token "$(get_token)" \
   -k8s-apiserver "$(get_api_server)" -cluster-subnet "$(get_cluster_cidr)" \
   -service-cluster-ip-range "$(get_service_cidr)" \
   -nodeport \
