@@ -55,17 +55,15 @@ RUN tdnf install --refresh -y -q autoconf \
 
 ADD ovn-go.tar.gz /opt/ovn-go-kube/
 
-COPY entrypoint.bash install-cni.bash kubeapi.bash common-api.bash init-node.bash ovsdb.bash ovs-vswitchd.bash watcher.bash ovn-controller.bash ovs-common.inc ovnnb-db.bash ovnsb-db.bash ovn-northd.bash ovn-central-common.inc init-connection.bash /root/
+COPY entrypoint.bash install-cni.bash kubeapi.bash common-api.bash init-node.bash ovsdb.bash ovs-vswitchd.bash ovn-controller.bash ovs-common.inc ovnnb-db.bash ovnsb-db.bash ovnnb-db-peer.bash ovnsb-db-peer.bash ovn-northd.bash ovn-central-common.inc init-connection.bash /root/
 
 WORKDIR /root
 
-RUN git clone https://github.com/anirban07/ovs.git
-
-WORKDIR ovs
+RUN git clone --single-branch -b anir-develop https://github.com/prasoontelang/ovs.git
 
 # ADD ovs-ldap.tar.gz ovs-ldap/
 
-# WORKDIR ovs-ldap
+WORKDIR ovs
 
 RUN ./boot.sh
 

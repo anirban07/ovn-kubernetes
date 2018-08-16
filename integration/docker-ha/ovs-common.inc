@@ -3,6 +3,10 @@
 source "$(dirname "${BASH_SOURCE[0]}")/common-api.bash"
 
 DBSOCK=/var/run/openvswitch/db.sock
+MASTER1="10.118.101.29"
+MASTER2="10.118.101.190"
+MASTER3="10.118.101.16"
+
 
 get_nbsb_kube_nodes() {
   #convert to [{name: , port: }..] array
@@ -12,7 +16,7 @@ get_nbsb_kube_nodes() {
 get_nbsb_kube_remote() {
   local R
   R="$(get_nbsb_kube_nodes "$1")"
-  [ "$( echo "$R" | jq '. | length')" == 1 ] || return 1
+  # [ "$( echo "$R" | jq '. | length')" == 1 ] || return 1
   local N
   local P
   N="$(echo "$R" | jq -er '.[0].name')"
@@ -20,6 +24,7 @@ get_nbsb_kube_remote() {
   local A
   A="$(get_node_internal_ip "$N")"
   echo "$A:$P"
+  # echo "$ovn_${1}"
 }
 
 add_nbsb_kube_label() {
