@@ -28,6 +28,7 @@ spec:
         name: ovn-kube-node
     spec:
       hostNetwork: true
+      hostPID: true
       serviceAccountName: ovnkube-node-sa
       tolerations:
       - operator: "Exists"
