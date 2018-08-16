@@ -77,8 +77,8 @@ spec:
             name: kubelet
           - mountPath: /var/run/openvswitch
             name: ovs-run
-          - mountPath: /var/run/ovn-kubernetes
-            name: ovn-kubernetes
+          - mountPath: /var/run/ovn-kubernetes/cni
+            name: ovn-kubernetes-cni
       volumes:
       - name: cni-bin-dir
         hostPath:
@@ -92,9 +92,9 @@ spec:
       - name: ovs-run
         hostPath:
           path: /var/run/openvswitch
-      - name: ovn-kubernetes
+      - name: ovn-kubernetes-cni
         hostPath:
-          path: /var/run/ovn-kubernetes
+          path: /var/run/ovn-kubernetes/cni
 
 ---
 
