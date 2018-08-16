@@ -179,6 +179,7 @@ func HandleCNIRequest(request *PodRequest) ([]byte, error) {
 	default:
 	}
 	if result == nil {
+		logrus.Infof("Nil for request: %v, ", request)
 		return PodResult{}.Response, fmt.Errorf("Nil response to CNI request")
 	}
 	logrus.Infof("Returning pod network request %v, result %s err %v", request, string(result.Response), result.Err)
