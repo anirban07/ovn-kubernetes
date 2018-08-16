@@ -59,6 +59,8 @@ spec:
             name: kubelet
           - mountPath: /var/run/openvswitch
             name: ovs-run
+          - mountPath: /var/run/ovn-kubernetes/cni
+            name: ovn-kubernetes-cni
       - name: install-cni
         image: anirban07/photon-2.0-ovnkube:latest
         imagePullPolicy: IfNotPresent
