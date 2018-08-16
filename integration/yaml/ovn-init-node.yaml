@@ -29,6 +29,7 @@ spec:
     spec:
       hostNetwork: true
       hostPID: true
+      privileged: true
       serviceAccountName: ovnkube-node-sa
       tolerations:
       - operator: "Exists"
