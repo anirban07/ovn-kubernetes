@@ -59,13 +59,13 @@ COPY entrypoint.bash install-cni.bash kubeapi.bash common-api.bash init-node.bas
 
 WORKDIR /root
 
-RUN git clone https://github.com/anirban07/ovs.git
+# RUN git clone https://github.com/anirban07/ovs.git
 
-WORKDIR ovs
+# WORKDIR ovs
 
-# ADD ovs-ldap.tar.gz ovs-ldap/
+ADD ovs-ldap.tar.gz ovs-ldap/
 
-# WORKDIR ovs-ldap
+WORKDIR ovs-ldap
 
 RUN ./boot.sh
 
