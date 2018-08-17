@@ -63,9 +63,9 @@ WORKDIR /root
 
 # WORKDIR ovs
 
-# ADD ovs-ldap.tar.gz ovs-ldap/
+ADD ovs-ldap.tar.gz ovs-ldap/
 
-# WORKDIR ovs-ldap
+WORKDIR ovs-ldap
 
 RUN ./boot.sh
 
