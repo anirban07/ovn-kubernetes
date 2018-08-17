@@ -9,3 +9,6 @@ ovs-appctl -t /var/run/openvswitch/ovnnb_db.ctl \
 ovsdb-tool -mm show-log /var/lib/openvswitch/ovnnb_db.db | head -n 20
 
 ovsdb-tool -mm show-log /var/lib/openvswitch/ovnsb_db.db | head -n 20
+
+# change permission to what ovn-kubernetes wants
+sudo chmod -R 700 /var/run/ovn-kubernetes/cni/

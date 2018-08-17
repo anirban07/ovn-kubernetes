@@ -37,6 +37,7 @@ spec:
         image: anirban07/photon-2.0-ovnkube:latest
         imagePullPolicy: IfNotPresent
         securityContext:
+          privileged: true
           capabilities:
             add: ["NET_ADMIN"]
         env:
