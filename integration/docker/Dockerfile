@@ -67,9 +67,9 @@ ADD ovs-ldap.tar.gz ovs-ldap/
 
 WORKDIR ovs-ldap
 
-RUN ./boot.sh
+# RUN ./boot.sh
 
-RUN ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc CFLAGS="-g"
+# RUN ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc CFLAGS="-g"
 
 RUN make
 

@@ -3,6 +3,7 @@
 shopt -s nullglob
 set -xe
 
+rsync -ac banirban@10.62.12.114:/Users/banirban/ovs-ldap /home/anirban/ovs-ldap-remote/
 
 cd "$(dirname "$0")"
 G="$(git rev-parse --show-toplevel)"
