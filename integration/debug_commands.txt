@@ -12,3 +12,9 @@ ovsdb-tool -mm show-log /var/lib/openvswitch/ovnsb_db.db | head -n 20
 
 # change permission to what ovn-kubernetes wants
 sudo chmod -R 700 /var/run/ovn-kubernetes/cni/
+
+google-chrome --disable-web-security --user-data-dir="/tmp/chrome"
+
+cat /var/log/ovs-custom/ovsdb-server.log | cut -d '|' -f 5 | sort | uniq
+
+ldapsearch -V -H ldap://10.20.153.104:389 -Y SRP -U administrator@lightwave.local -w 'Admin!23' -b "cn=ovsNorthBound,dc=lw-testdom,dc=com" -s base

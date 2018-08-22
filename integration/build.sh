@@ -3,7 +3,7 @@
 shopt -s nullglob
 set -xe
 
-rsync -ac banirban@10.62.12.114:/Users/banirban/ovs-ldap /home/anirban/ovs-ldap-remote/
+#rsync -ac banirban@10.62.12.114:/Users/banirban/ovs-ldap /home/anirban/ovs-ldap-remote/
 
 cd "$(dirname "$0")"
 G="$(git rev-parse --show-toplevel)"
@@ -11,7 +11,7 @@ K="$G/integration/docker"
 if [ "$1" = "ha" ]; then
     K="${K}-ha"
 fi
-O="/home/anirban/ovs-ldap-remote/ovs-ldap"
+O="/home/anirban/ovs-ldap"
 
 if [ ! -e ${O}/boot.sh ]; then
     echo "ovs-ldap is not mounted on ${O}"

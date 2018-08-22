@@ -19,37 +19,53 @@ RUN tdnf install --refresh -y -q autoconf \
                                  bindutils \
                                  binutils \
                                  build-essential \
+                                 createrepo_c-0.10.0 \
                                  cyrus-sasl \
+                                 e2fsprogs-devel-1.43.4 \
+                                 elfutils-0.169 \
+                                 file \
                                  findutils \
                                  g++ \
                                  gcc \
                                  gdb \
                                  git \
+                                 glibc-devel-2.26 \
+                                 gzip-1.8 \
                                  iproute2 \ 
                                  iptables \
+                                 jansson-devel-2.10 \
                                  jq \ 
                                  libcap-ng-devel \
-                                 libcurl4-openssl-dev \
                                  libcurl4-openssl-dev \
                                  libsasl2-dev \
                                  libssl-dev \
                                  libtool \
+                                 lightwave-client-1.3.1 \
+                                 linux-api-headers-4.9.74 \
                                  make \
                                  openldap \
-                                 openssl \
+                                 openssl-1.0.2n \
+                                 openssl-devel-1.0.2n \
                                  ovn-central \ 
                                  ovn-common \ 
                                  ovn-host \
                                  pkg-config \
-                                 procps-ng \
+                                 procps-ng-3.3.12 \
+                                 python-pip-9.0.1 \
                                  PyYAML \ 
+                                 rpm-build-4.13.0.1 \
+                                 rpm-devel-4.13.0.1 \
+                                 rpm-4.13.0.1 \
                                  sed \
+                                 shadow-4.2.1 \
                                  strace \ 
                                  systemd \
                                  tar \
                                  tmux \
-                                 util-linux \
+                                 util-linux-devel-2.29.2 \
                                  vim \
+                                 zlib-1.2.11 \
+                                 zlib-devel-1.2.11 \
                                  && \ 
     tdnf clean all
 
@@ -67,9 +83,9 @@ ADD ovs-ldap.tar.gz ovs-ldap/
 
 WORKDIR ovs-ldap
 
-# RUN ./boot.sh
+RUN ./boot.sh
 
-# RUN ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc CFLAGS="-g"
+RUN ./configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc CFLAGS="-g"
 
 RUN make
 
