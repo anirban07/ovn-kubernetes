@@ -34,6 +34,8 @@ spec:
             name: ovn-db
           - mountPath: /var/run/openvswitch
             name: ovn-run
+          - mountPath: /var/log/ovs-custom
+            name: ovs-log-dir-nb
         env:
         - name: OVN_K8S_NODE_NAME
           valueFrom:
@@ -50,6 +52,8 @@ spec:
             name: ovn-db
           - mountPath: /var/run/openvswitch
             name: ovn-run
+          - mountPath: /var/log/ovs-custom
+            name: ovs-log-dir-sb
         env:
         - name: OVN_K8S_NODE_NAME
           valueFrom:
@@ -84,6 +88,12 @@ spec:
       - name: ovn-db
         hostPath:
           path: /var/lib/openvswitch
+      - name: ovs-log-dir-nb
+        hostPath:
+          path: /var/log/ovs-custom/nb
+      - name: ovs-log-dir-sb
+        hostPath:
+          path: /var/log/ovs-custom/sb
 
 ---
 
