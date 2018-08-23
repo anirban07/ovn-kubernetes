@@ -30,3 +30,5 @@ tar Cczf "${O}" "${K}/ovs-ldap.tar.gz" .
 
 cd "$K"
 docker build -t anirban07/photon-2.0-ovnkube:latest .
+#docker save -o /home/anirban/docker-images/image anirban07/photon-2.0-ovnkube:latest
+#scp /home/docker-images/ kube1:/home/docker-images

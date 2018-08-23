@@ -42,6 +42,7 @@ exec_db() {
   local R
   trap "{ del_nbsb_kube_label "$1"; }" EXIT
   ovsdb-server -vconsole:info \
+"--verbose=dbg" \
 "--remote=punix:$(get_nbsb_sock "$1")" \
 "--remote=db:$(get_nbsb_remote_db_table "$1")" \
 "--unixctl=$(get_nbsb_unixctl "$1")" \
