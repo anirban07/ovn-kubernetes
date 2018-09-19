@@ -9,4 +9,4 @@ DB=/etc/openvswitch/conf.db
 
 [ -f $DB ] || ovsdb-tool create $DB
 
-exec ovsdb-server $DB -vconsole:info "--remote=punix:$DBSOCK" --log-file=/var/log/ovs-custom/ovsdb-server.log
+exec ovsdb-server $DB -vconsole:info "--remote=punix:$DBSOCK" --log-file=/var/log/ovs-custom/ovsdb-server.log "--verbose=dbg"
